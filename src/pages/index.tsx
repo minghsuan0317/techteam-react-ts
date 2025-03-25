@@ -9,11 +9,13 @@ import {
   Link as ChakraLink,
   useToast,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router"; // Import useRouter for navigation
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
+  const router = useRouter(); // Initialize useRouter
 
   // Dummy data stored in localStorage
   if (typeof window !== "undefined") {
@@ -66,8 +68,9 @@ const Signin = () => {
         duration: 3000,
         isClosable: true,
       });
-      // Redirect to main page (example: `/dashboard`)
-      window.location.href = "/dashboard";
+
+      // Redirect to the tutor page
+      router.push("/tutors"); // Use router.push for navigation
     } else {
       toast({
         title: "Invalid Credentials",
