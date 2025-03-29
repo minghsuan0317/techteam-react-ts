@@ -81,4 +81,3 @@ const Signin = () => {
       });
     }
   };
->>>>>>> 1826bba (Add tutors page implementation)
