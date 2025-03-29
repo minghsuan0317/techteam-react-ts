@@ -1,13 +1,61 @@
-import { Stack, StackProps } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  Image,
+  SimpleGrid,
+  Stack,
+  Text
+} from "@chakra-ui/react";
 
-export const Main = (props: StackProps) => (
-  <Stack
-    spacing="1.5rem"
-    width="100%"
-    maxWidth="48rem"
-    mt="-45vh"
-    pt="8rem"
-    px="1rem"
-    {...props}
-  />
-);
+export default function Main() {
+  return (
+    <Box px={6} py={12} bg="gray.50">
+      <Heading as="h2" size="xl" mb={8} textAlign="center">
+        Get started.
+      </Heading>
+
+      {/* Use SimpleGrid to make two columns
+      it will automatically change to one column on mobile) */}
+      <SimpleGrid columns={[1, null, 2]} spacing={10} maxW="1200px" mx="auto">
+        {/* Tutor Card */}
+        <Box bg="white" p={6} borderRadius="lg" boxShadow="md">
+          <Stack spacing={4}>
+            <Heading size="md">Tutor</Heading>
+            <Button colorScheme="blue" width="fit-content">
+              Let's go
+            </Button>
+            <Image
+              src="/tutor-placeholder.png"
+              alt="Tutor preview"
+              borderRadius="md"
+            />
+            <Text fontSize="sm">
+              for applicants who want to become casual tutors. Fill
+              in your background, skills, and availability.
+            </Text>
+          </Stack>
+        </Box>
+
+        {/* Lecturer Card */}
+        <Box bg="white" p={6} borderRadius="lg" boxShadow="md">
+          <Stack spacing={4}>
+            <Heading size="md">Lecturer</Heading>
+            <Button colorScheme="blue" width="fit-content">
+              Let's go
+            </Button>
+            <Image
+              src="/lecturer-placeholder.png"
+              alt="Lecturer preview"
+              borderRadius="md"
+            />
+            <Text fontSize="sm">
+              for lecturers to review applicants, leave comments,
+              and manage tutor selections.
+            </Text>
+          </Stack>
+        </Box>
+      </SimpleGrid>
+    </Box>
+  );
+};

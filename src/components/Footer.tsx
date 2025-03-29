@@ -1,5 +1,14 @@
-import { Flex, FlexProps } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
-export const Footer = (props: FlexProps) => (
-  <Flex as="footer" py="8rem" {...props} />
-);
+export default function Footer() {
+  return (
+    <Box bg="gray.100" py={6} textAlign="center">
+      <Text fontSize="sm" fontWeight="medium">
+        © 2025 TeachTeam – RMIT University
+      </Text>
+      <Text fontSize="xs" color="gray.600" mt={1}>
+        For academic use only.
+      </Text>
+    </Box>
+  );
+};

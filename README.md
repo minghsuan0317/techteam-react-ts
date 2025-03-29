@@ -1,41 +1,61 @@
+# TeachTeam – Assignment 1
 
-# Example app with [chakra-ui](https://github.com/chakra-ui/chakra-ui) and TypeScript
+This is the front-end prototype for the TeachTeam system.
+It is built with **React + TypeScript** and uses **Chakra UI** for styling.
 
-This example features how to use [chakra-ui](https://github.com/chakra-ui/chakra-ui) as the component library within a Next.js app with TypeScript.
+✅ This version follows all assignment rules:
+- No JavaScript
+- No database
+- Only uses client-side code
+- No pre-built templates
 
-Next.js and chakra-ui have built-in TypeScript declarations, so we'll get autocompletion for their modules straight away.
+👥 This project was built by **Ming** and **Arina**.
 
-We are connecting the Next.js `_app.js` with `chakra-ui`'s Provider and theme so the pages can have app-wide dark/light mode. We are also creating some components which shows the usage of `chakra-ui`'s style props.
+---
 
-## Deploy your own
+## 🎨 Styling
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-chakra-ui)
+We use **Chakra UI** for all styles.
+The custom theme is in `theme.tsx`.
+It sets:
+- Fonts
+- Colors (brand color: teal)
+- Border radius
+- Responsive breakpoints
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-chakra-ui&project-name=with-chakra-ui&repository-name=with-chakra-ui)
+---
 
-## How to use
+## Project Structure
 
-### Using `create-next-app`
+# `pages/index.tsx`
+This is the homepage. It shows:
+- `Hero` section (title and description)
+- `Main` section (2 cards: Tutor / Lecturer)
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+# `pages/Lecturer.tsx`
+This is the Lecturer Dashboard page.
 
-```bash
-npx create-next-app --example with-chakra-ui with-chakra-ui-app
-```
+# `components/Layout.tsx`
+This wraps the page layout with a **Header** and **Footer**.
 
-```bash
-yarn create next-app --example with-chakra-ui with-chakra-ui-app
-```
+# `components/Header.tsx` + `Navigation.tsx`
+This is the top navigation bar. It has:
+- Website title
+- Menu links (Home, About, Courses)
+- Login and Sign up buttons
 
-```bash
-pnpm create next-app --example with-chakra-ui with-chakra-ui-app
-```
+# `components/Footer.tsx`
+Bottom section of all pages.
+Shows copyright and academic notice.
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+# `components/Hero.tsx`
+The big title area on the homepage.
+It's the first section users see.
 
-## Notes
+# `components/Main.tsx`
+The 2 cards in the homepage.
+- Left: For Tutor applicants
+- Right: For Lecturers
 
-Chakra has supported Gradients and RTL in `v1.1`. To utilize RTL, [add RTL direction and swap](https://chakra-ui.com/docs/features/rtl-support).
-
-If you don't have multi-direction app, you should make `<Html lang="ar" dir="rtl">` inside `_document.ts`.
+---
 

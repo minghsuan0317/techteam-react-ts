@@ -1,17 +1,19 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text, Stack } from "@chakra-ui/react";
 
-export const Hero = ({ title }: { title: string }) => (
-  <Flex
-    justifyContent="center"
-    alignItems="center"
-    height="100vh"
-    bgGradient="linear(to-l, heroGradientStart, heroGradientEnd)"
-    bgClip="text"
-  >
-    <Heading fontSize="6vw">{title}</Heading>
-  </Flex>
-);
+// The big topic area at the top of the homepage
+export default function Hero() {
+  return (
+    <Box bg="teal.500" color="white" py={20} textAlign="center">
+      <Stack spacing={4}>
 
-Hero.defaultProps = {
-  title: "with-chakra-ui-typescript",
+        {/* main title */}
+        <Heading size="2xl">Welcome to TeachTeam</Heading>
+
+        {/* sub title */}
+        <Text fontSize="lg">
+          Bring real-world insight into classrooms and shape future learners.
+        </Text>
+      </Stack>
+    </Box>
+  );
 };
