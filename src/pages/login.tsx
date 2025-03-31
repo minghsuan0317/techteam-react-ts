@@ -10,6 +10,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router"; // Import useRouter for navigation
+import Layout from "../components/Layout"; // Import Layout component
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -81,4 +82,43 @@ const Signin = () => {
       });
     }
   };
->>>>>>> 1826bba (Add tutors page implementation)
+
+  return (
+    <Layout> {/* Wrap the content in Layout */}
+      <Box maxW="md" mx="auto" mt={8} p={4} borderWidth={1} borderRadius="md">
+        <Text fontSize="2xl" fontWeight="bold" mb={4}>
+          Sign In
+        </Text>
+        <form onSubmit={handleSignin}>
+          <FormControl id="email" mb={4}>
+            <FormLabel>Email address</FormLabel>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="password" mb={4}>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </FormControl>
+          <Button type="submit" colorScheme="blue" width="full" mb={4}>
+            Sign In
+          </Button>
+          <Text fontSize="sm" textAlign="center">
+            Don’t have an account?{" "}
+            <ChakraLink href="/signup" color="blue.500">
+              Sign up
+            </ChakraLink>
+          </Text>
+        </form>
+      </Box>
+    </Layout>
+  );
+};
+
+export default Signin;
