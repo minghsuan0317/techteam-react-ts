@@ -18,9 +18,6 @@ export default function Navbar() {
         <Link as={NextLink} href="/" fontSize="sm">
           Home
         </Link>
-        <Link as={NextLink} href="/about" fontSize="sm">
-          About
-        </Link>
         <Link as={NextLink} href="/courses" fontSize="sm">
           Courses
         </Link>
