@@ -7,11 +7,14 @@ import {
   Select,
   Text,
   Textarea,
+  Input,
   useToast,
 } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 
 const Tutors = () => {
+  const [firstName, setFirstName] = useState(""); 
+  const [lastName, setLastName] = useState("");  
   const [availability, setAvailability] = useState("");
   const [skills, setSkills] = useState("");
   const [academicCredentials, setAcademicCredentials] = useState("");
@@ -29,7 +32,7 @@ const Tutors = () => {
   ];
 
   const handleApply = () => {
-    if (!selectedCourse || !availability || !skills || !academicCredentials) {
+    if (!firstName || !lastName || !selectedCourse || !availability || !skills || !academicCredentials) {
       toast({
         title: "Incomplete Form",
         description: "Please fill out all fields to apply for a role.",
@@ -41,6 +44,8 @@ const Tutors = () => {
     }
 
     const applicationData = {
+      firstName, 
+      lastName,  
       course: selectedCourse,
       availability,
       skills,
@@ -62,6 +67,9 @@ const Tutors = () => {
       isClosable: true,
     });
 
+    // Reset all input fields
+    setFirstName("");
+    setLastName("");
     setSelectedCourse("");
     setAvailability("");
     setSkills("");
@@ -75,6 +83,26 @@ const Tutors = () => {
         <Text fontSize="2xl" fontWeight="bold" mb="4" textAlign="center">
           Tutors Portal
         </Text>
+
+        {/* 新增 First Name 欄位 */}
+        <FormControl id="firstName" isRequired mb="4">
+          <FormLabel>First Name</FormLabel>
+          <Input
+            placeholder="Enter your first name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </FormControl>
+
+        {/* 新增 Last Name 欄位 */}
+        <FormControl id="lastName" isRequired mb="4">
+          <FormLabel>Last Name</FormLabel>
+          <Input
+            placeholder="Enter your last name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </FormControl>
 
         <FormControl id="course" isRequired mb="4">
           <FormLabel>Course to Apply</FormLabel>
