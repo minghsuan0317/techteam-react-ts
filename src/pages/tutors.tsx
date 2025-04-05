@@ -4,13 +4,12 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
   Select,
   Text,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import Layout from "../components/Layout"; // Import the Layout component
+import Layout from "../components/Layout";
 
 const Tutors = () => {
   const [availability, setAvailability] = useState("");
@@ -35,10 +34,24 @@ const Tutors = () => {
         title: "Incomplete Form",
         description: "Please fill out all fields to apply for a role.",
         status: "error",
-        duration: 3000, // 3 seconds
+        duration: 3000,
         isClosable: true,
       });
       return;
+    }
+
+    const applicationData = {
+      course: selectedCourse,
+      availability,
+      skills,
+      academicCredentials,
+      previousRoles,
+    };
+
+    if (typeof window !== "undefined") {
+      const existingApplications = JSON.parse(localStorage.getItem("tutorApplications") || "[]");
+      existingApplications.push(applicationData);
+      localStorage.setItem("tutorApplications", JSON.stringify(existingApplications));
     }
 
     toast({
@@ -48,6 +61,12 @@ const Tutors = () => {
       duration: 3000,
       isClosable: true,
     });
+
+    setSelectedCourse("");
+    setAvailability("");
+    setSkills("");
+    setAcademicCredentials("");
+    setPreviousRoles("");
   };
 
   return (
@@ -57,7 +76,6 @@ const Tutors = () => {
           Tutors Portal
         </Text>
 
-        {/* Form */}
         <FormControl id="course" isRequired mb="4">
           <FormLabel>Course to Apply</FormLabel>
           <Select
@@ -110,12 +128,7 @@ const Tutors = () => {
           />
         </FormControl>
 
-        <Button
-          colorScheme="purple"
-          width="100%"
-          mt="6"
-          onClick={handleApply}
-        >
+        <Button colorScheme="purple" width="100%" mt="6" onClick={handleApply}>
           Apply
         </Button>
       </Box>
