@@ -13,7 +13,8 @@ import {
 
 type Applicant = {
   id: number;
-  name?: string;
+  firstName: string;
+  lastName: string;
   course: string;
   availability: string;
   skills: string;
@@ -22,7 +23,6 @@ type Applicant = {
   isSelected?: boolean;
   rank?: number;
   comment?: string;
-
 };
 
 type Props = {
@@ -32,7 +32,6 @@ type Props = {
   onCommentChange: (id: number, comment: string) => void;
   onConfirm: (applicant: Applicant) => void;
 };
-
 
 export default function ApplicantCard({
   applicant,
@@ -48,7 +47,9 @@ export default function ApplicantCard({
         onChange={() => onToggle(applicant.id)}
         mb={2}
       >
-        {applicant.name}
+        <Text fontWeight="bold" fontSize="lg">
+          {`${applicant.firstName} ${applicant.lastName}`}
+        </Text>
       </Checkbox>
 
       <Text fontWeight="bold">Availability: {applicant.availability}</Text>
@@ -109,4 +110,3 @@ export default function ApplicantCard({
     </Box>
   );
 }
-

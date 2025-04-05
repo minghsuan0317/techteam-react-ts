@@ -10,11 +10,10 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import Layout from "../components/Layout";
 
 const Tutors = () => {
-  const [firstName, setFirstName] = useState(""); 
-  const [lastName, setLastName] = useState("");  
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [availability, setAvailability] = useState("");
   const [skills, setSkills] = useState("");
   const [academicCredentials, setAcademicCredentials] = useState("");
@@ -44,8 +43,9 @@ const Tutors = () => {
     }
 
     const applicationData = {
-      firstName, 
-      lastName,  
+      id: Date.now(), // Use timestamp as a unique ID
+      firstName,
+      lastName,
       course: selectedCourse,
       availability,
       skills,
@@ -78,8 +78,14 @@ const Tutors = () => {
   };
 
   return (
-    <Layout>
-      <Box maxW="600px" mx="auto" mt="50px" p="20px" boxShadow="md" borderRadius="lg">
+      <Box
+        maxW="600px"
+        mx="auto"
+        mt="50px"
+        p="20px"
+        boxShadow="md"
+        borderRadius="lg"
+      >
         <Text fontSize="2xl" fontWeight="bold" mb="4" textAlign="center">
           Tutors Portal
         </Text>
@@ -106,11 +112,13 @@ const Tutors = () => {
           <FormLabel>Course to Apply</FormLabel>
           <Select
             placeholder="Select a course"
+            value={selectedCourse} // Set the value to the selected course (resetting to default)
             onChange={(e) => setSelectedCourse(e.target.value)}
           >
             {courses.map((course) => (
               <option key={course.code} value={course.code}>
-                {course.code} - {course.name.charAt(0).toUpperCase() + course.name.slice(1)}
+                {course.code} -{" "}
+                {course.name.charAt(0).toUpperCase() + course.name.slice(1)}
               </option>
             ))}
           </Select>
@@ -120,6 +128,7 @@ const Tutors = () => {
           <FormLabel>Availability</FormLabel>
           <Select
             placeholder="Select availability"
+            value={availability} // Set the value to the selected availability (resetting to default)
             onChange={(e) => setAvailability(e.target.value)}
           >
             <option value="Part Time">Part Time</option>
@@ -158,7 +167,6 @@ const Tutors = () => {
           Apply
         </Button>
       </Box>
-    </Layout>
   );
 };
 
