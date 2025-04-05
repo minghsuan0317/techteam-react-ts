@@ -1,14 +1,17 @@
-// components/ApplicantCard.tsx
+// ApplicantCard show the pending applicant's details in lecturer page.
+// It allows the lecturer to select, rank, and comment on the applicant.
+
+
 import {
-  Box,
-  Text,
-  Button,
-  Checkbox,
-  Divider,
-  Stack,
-  Tag,
-  Select,
-  Textarea,
+	Box,
+	Text,
+	Button,
+	Checkbox,
+	Divider,
+	Stack,
+	Tag,
+	Select,
+	Textarea,
 } from "@chakra-ui/react";
 
 type Applicant = {
@@ -41,7 +44,7 @@ export default function ApplicantCard({
   onConfirm,
 }: Props) {
   return (
-    <Box p={4} mb={4} border="1px solid #ccc" borderRadius="md" boxShadow="sm">
+    <Box p={4} mb={4} borderRadius="md" boxShadow="sm">
       <Checkbox
         isChecked={applicant.isSelected || false}
         onChange={() => onToggle(applicant.id)}
@@ -59,11 +62,15 @@ export default function ApplicantCard({
       <Divider my={2} />
       <Text mb={1}>Skills:</Text>
       <Stack direction="row" flexWrap="wrap">
-        {applicant.skills.split(",").map((skill, index) => (
-          <Tag key={index} colorScheme="teal" mr={2} mb={1}>
-            {skill.trim()}
-          </Tag>
-        ))}
+        {applicant.skills.split(",").map((skill) => {
+          // Remove the space from the skill and use it as the key!
+          const trimmed = skill.trim();
+          return (
+            <Tag key={trimmed} colorScheme="teal" mr={2} mb={1}>
+              {trimmed}
+            </Tag>
+          );
+        })}
       </Stack>
 
       {applicant.isSelected && (
@@ -79,11 +86,14 @@ export default function ApplicantCard({
                 onRankChange(applicant.id, Number(e.target.value))
               }
             >
-              {[...Array(10)].map((_, i) => (
-                <option key={i} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
+              {[...Array(10)].map((_, i) => {
+                const value = i + 1;
+                return (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                );
+              })}
             </Select>
           </Box>
 
