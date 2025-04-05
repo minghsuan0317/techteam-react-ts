@@ -10,7 +10,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router"; // Import useRouter for navigation
-import Layout from "../components/Layout"; // Import Layout component
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -84,7 +83,6 @@ const Signin = () => {
   };
 
   return (
-    <Layout> {/* Wrap the content in Layout */}
       <Box maxW="md" mx="auto" mt={8} p={4} borderWidth={1} borderRadius="md">
         <Text fontSize="2xl" fontWeight="bold" mb={4}>
           Sign In
@@ -117,7 +115,6 @@ const Signin = () => {
           </Text>
         </form>
       </Box>
-    </Layout>
   );
 };
 

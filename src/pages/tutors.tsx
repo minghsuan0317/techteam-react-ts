@@ -84,7 +84,6 @@ const Tutors = () => {
           Tutors Portal
         </Text>
 
-        {/* 新增 First Name 欄位 */}
         <FormControl id="firstName" isRequired mb="4">
           <FormLabel>First Name</FormLabel>
           <Input
@@ -94,7 +93,6 @@ const Tutors = () => {
           />
         </FormControl>
 
-        {/* 新增 Last Name 欄位 */}
         <FormControl id="lastName" isRequired mb="4">
           <FormLabel>Last Name</FormLabel>
           <Input
@@ -165,3 +163,4 @@ const Tutors = () => {
 };
 
 export default Tutors;
+

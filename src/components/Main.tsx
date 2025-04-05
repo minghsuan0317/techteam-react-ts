@@ -1,3 +1,4 @@
+import NextLink from "next/link";
 import {
   Box,
   Button,
@@ -5,7 +6,7 @@ import {
   Image,
   SimpleGrid,
   Stack,
-  Text
+  Text,
 } from "@chakra-ui/react";
 
 export default function Main() {
@@ -22,17 +23,14 @@ export default function Main() {
         <Box bg="white" p={6} borderRadius="lg" boxShadow="md">
           <Stack spacing={4}>
             <Heading size="md">Tutor</Heading>
-            <Button colorScheme="blue" width="fit-content">
-              Let's go
-            </Button>
-            <Image
-              src="/tutor-placeholder.png"
-              alt="Tutor preview"
-              borderRadius="md"
-            />
+            <NextLink href="/login" passHref>
+              <Button colorScheme="blue" width="fit-content">
+                Let's go
+              </Button>
+            </NextLink>
             <Text fontSize="sm">
-              for applicants who want to become casual tutors. Fill
-              in your background, skills, and availability.
+              for applicants who want to become casual tutors. Fill in your
+              background, skills, and availability.
             </Text>
           </Stack>
         </Box>
@@ -41,21 +39,18 @@ export default function Main() {
         <Box bg="white" p={6} borderRadius="lg" boxShadow="md">
           <Stack spacing={4}>
             <Heading size="md">Lecturer</Heading>
-            <Button colorScheme="blue" width="fit-content">
-              Let's go
-            </Button>
-            <Image
-              src="/lecturer-placeholder.png"
-              alt="Lecturer preview"
-              borderRadius="md"
-            />
+            <NextLink href="/login" passHref>
+              <Button colorScheme="blue" width="fit-content">
+                Let's go
+              </Button>
+            </NextLink>
             <Text fontSize="sm">
-              for lecturers to review applicants, leave comments,
-              and manage tutor selections.
+              for lecturers to review applicants, leave comments, and manage
+              tutor selections.
             </Text>
           </Stack>
         </Box>
       </SimpleGrid>
     </Box>
   );
-};
+}
