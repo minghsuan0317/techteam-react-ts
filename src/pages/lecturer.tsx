@@ -5,7 +5,8 @@ import { Box, Heading, Text, Select, Stack, Input } from "@chakra-ui/react";
 // Applicant type definition
 type Applicant = {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
   course: string;
   availability: string;
   skills: string;
@@ -37,7 +38,7 @@ export default function LecturerPage() {
 
   // When tha page open, read the data in localStorage
   useEffect(() => {
-    const stored = localStorage.getItem("applicantsData");
+    const stored = localStorage.getItem("tutorApplications");
     if (stored) {
       setApplicants(JSON.parse(stored));
     }
@@ -45,7 +46,7 @@ export default function LecturerPage() {
 
   // when applicants have modified, update data to localStorage immediately
   useEffect(() => {
-    localStorage.setItem("applicantsData", JSON.stringify(applicants));
+    localStorage.setItem("tutorApplications", JSON.stringify(applicants));
   }, [applicants]);
 
   // Toggle Selection
@@ -88,11 +89,14 @@ export default function LecturerPage() {
       ? app.availability === searchAvailability
       : true;
     const skillMatch = searchSkill
-      ? app.skills.toLowerCase().includes(searchSkill.toLowerCase())
+      ? app.skills.trim().toLowerCase().includes(searchSkill.toLowerCase())
       : true;
-    const nameMatch = searchName
-      ? app.name?.toLowerCase().includes(searchName.toLowerCase())
-      : true;
+const nameMatch = searchName.trim()
+  ? `${app.firstName} ${app.lastName}`
+      .toLowerCase()
+      .includes(searchName.trim().toLowerCase())
+  : true;
+
 
     return courseMatch && availabilityMatch && skillMatch && nameMatch;
   });
@@ -170,8 +174,6 @@ export default function LecturerPage() {
           w="350px"
         />
       </Stack>
-
-
 
       {/* Application Card Display */}
       {filteredApplicants.length === 0 ? (
