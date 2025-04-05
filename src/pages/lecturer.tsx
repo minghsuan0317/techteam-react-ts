@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+
 import ApplicantCard from "../components/ApplicantCard";
 import {
   Box,
@@ -8,7 +10,12 @@ import {
   Select,
   Stack,
   Input,
-  Checkbox,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Switch,
+  Flex,
 } from "@chakra-ui/react";
 
 // Applicant type definition
@@ -44,6 +51,7 @@ export default function LecturerPage() {
   const [finalSelected, setFinalSelected] = useState<Applicant[]>([]);
   const [showPending, setShowPending] = useState(true);
   const [showConfirmed, setShowConfirmed] = useState(true);
+  const [sortField, setSortField] = useState<string>("");
 
   // When tha page open, read the data in localStorage
   useEffect(() => {
@@ -147,6 +155,15 @@ export default function LecturerPage() {
       !finalSelected.some((a) => a.id === app.id)
   );
 
+  const sortedApplicants = [...filteredApplicants].sort((a, b) => {
+    if (!sortField) return 0;
+    const aValue =
+      a[sortField as keyof Applicant]?.toString().toLowerCase() || "";
+    const bValue =
+      b[sortField as keyof Applicant]?.toString().toLowerCase() || "";
+    return aValue.localeCompare(bValue);
+  });
+
   const filteredConfirmed = finalSelected
     .filter((app) => applyFilters(app) && showConfirmed)
     .sort((a, b) => (a.rank || 999) - (b.rank || 999));
@@ -161,21 +178,22 @@ export default function LecturerPage() {
         Select a course to view and manage tutor applicants.
       </Text>
 
-      <Select
-        value={selectedCourse}
-        onChange={(e) => setSelectedCourse(e.target.value)}
-        mb={6}
-      >
-        <option value="ALL">All Courses</option>
-        {courses.map((course) => (
-          <option key={course.code} value={course.code}>
-            {course.code} – {course.name}
-          </option>
-        ))}
-      </Select>
-
-      {/* Advanced Filter */}
       <Stack direction="row" spacing={4} mb={6} width="100%">
+        <Select
+          value={selectedCourse}
+          onChange={(e) => setSelectedCourse(e.target.value)}
+          width="auto"
+          flex="1"
+          fontWeight="semibold"
+        >
+          <option value="ALL">All Courses</option>
+          {courses.map((course) => (
+            <option key={course.code} value={course.code}>
+              {course.code} – {course.name}
+            </option>
+          ))}
+        </Select>
+
         {/* Availability Filter */}
         <Select
           placeholder="Availability"
@@ -188,42 +206,65 @@ export default function LecturerPage() {
           <option value="Part Time">Part Time</option>
           <option value="Full Time">Full Time</option>
         </Select>
+      </Stack>
 
-        {/* Skill Filter */}
-        <Input
-          placeholder="Search skill"
-          value={searchSkill}
-          onChange={(e) => setSearchSkill(e.target.value.trim())}
-          width="auto"
-          flex="1"
-          fontWeight="semibold"
-        />
+      {/* Advanced Filter */}
+      <Stack spacing={4} mb={6}>
+        <Stack direction="row" spacing={4} mb={6} width="100%">
+          {/* Skill Filter */}
+          <Input
+            placeholder="Search skill"
+            value={searchSkill}
+            onChange={(e) => setSearchSkill(e.target.value.trim())}
+            width="auto"
+            flex="1"
+            fontWeight="semibold"
+          />
 
-        {/* Name Filter */}
-        <Input
-          placeholder="Search tutor's name"
-          value={searchName}
-          onChange={(e) => setSearchName(e.target.value.trim())}
-          width="auto"
-          flex="1"
-          fontWeight="semibold"
-          w="350px"
-        />
+          {/* Name Filter */}
+          <Input
+            placeholder="Search name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value.trim())}
+            width="auto"
+            flex="1"
+            fontWeight="semibold"
+          />
 
-        {/* Status Filter */}
-        <Stack direction="row" spacing={4} mb={4}>
-          <Checkbox
-            isChecked={showPending}
-            onChange={() => setShowPending(!showPending)}
-          >
-            Pending
-          </Checkbox>
-          <Checkbox
-            isChecked={showConfirmed}
-            onChange={() => setShowConfirmed(!showConfirmed)}
-          >
-            Confirmed
-          </Checkbox>
+          {/* Sort the applicants’ list by course name and availability */}
+          <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              Sort by
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => setSortField("course")}>Course</MenuItem>
+              <MenuItem onClick={() => setSortField("availability")}>
+                Availability
+              </MenuItem>
+            </MenuList>
+          </Menu>
+
+          {/* Status Filter */}
+          <Flex gap={4} align="center">
+            <Flex align="center" gap={2}>
+              <Switch
+                isChecked={showPending}
+                onChange={() => setShowPending(!showPending)}
+                colorScheme="blue"
+                id="pending-switch"
+              />
+              <label htmlFor="pending-switch">Pending</label>
+            </Flex>
+            <Flex align="center" gap={2}>
+              <Switch
+                isChecked={showConfirmed}
+                onChange={() => setShowConfirmed(!showConfirmed)}
+                colorScheme="blue"
+                id="confirmed-switch"
+              />
+              <label htmlFor="confirmed-switch">Confirmed</label>
+            </Flex>
+          </Flex>
         </Stack>
       </Stack>
 
@@ -238,18 +279,16 @@ export default function LecturerPage() {
           <Heading size="md" mb={4}>
             Pending Applicants
           </Heading>
-          {[...filteredApplicants]
-            .sort((a, b) => (a.rank || 999) - (b.rank || 999))
-            .map((applicant) => (
-              <ApplicantCard
-                key={applicant.id}
-                applicant={applicant}
-                onToggle={toggleSelect}
-                onRankChange={updateRank}
-                onCommentChange={updateComment}
-                onConfirm={confirmSelection}
-              />
-            ))}
+          {sortedApplicants.map((applicant) => (
+            <ApplicantCard
+              key={applicant.id}
+              applicant={applicant}
+              onToggle={toggleSelect}
+              onRankChange={updateRank}
+              onCommentChange={updateComment}
+              onConfirm={confirmSelection}
+            />
+          ))}
         </Box>
       )}
 
@@ -257,7 +296,7 @@ export default function LecturerPage() {
       {showConfirmed && finalSelected.length > 0 && (
         <Box mt={10}>
           <Heading size="md" mb={4}>
-            Confirmed Applicants
+            Confirmed Applicants (Sorted by Rank)
           </Heading>
 
           {filteredConfirmed.map((applicant) => (
