@@ -4,15 +4,17 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
   Select,
   Text,
   Textarea,
+  Input,
   useToast,
 } from "@chakra-ui/react";
-import Layout from "../components/Layout"; // Import the Layout component
+import Layout from "../components/Layout";
 
 const Tutors = () => {
+  const [firstName, setFirstName] = useState(""); 
+  const [lastName, setLastName] = useState("");  
   const [availability, setAvailability] = useState("");
   const [skills, setSkills] = useState("");
   const [academicCredentials, setAcademicCredentials] = useState("");
@@ -30,15 +32,31 @@ const Tutors = () => {
   ];
 
   const handleApply = () => {
-    if (!selectedCourse || !availability || !skills || !academicCredentials) {
+    if (!firstName || !lastName || !selectedCourse || !availability || !skills || !academicCredentials) {
       toast({
         title: "Incomplete Form",
         description: "Please fill out all fields to apply for a role.",
         status: "error",
-        duration: 3000, // 3 seconds
+        duration: 3000,
         isClosable: true,
       });
       return;
+    }
+
+    const applicationData = {
+      firstName, 
+      lastName,  
+      course: selectedCourse,
+      availability,
+      skills,
+      academicCredentials,
+      previousRoles,
+    };
+
+    if (typeof window !== "undefined") {
+      const existingApplications = JSON.parse(localStorage.getItem("tutorApplications") || "[]");
+      existingApplications.push(applicationData);
+      localStorage.setItem("tutorApplications", JSON.stringify(existingApplications));
     }
 
     toast({
@@ -48,6 +66,15 @@ const Tutors = () => {
       duration: 3000,
       isClosable: true,
     });
+
+    // Reset all input fields
+    setFirstName("");
+    setLastName("");
+    setSelectedCourse("");
+    setAvailability("");
+    setSkills("");
+    setAcademicCredentials("");
+    setPreviousRoles("");
   };
 
   return (
@@ -57,7 +84,26 @@ const Tutors = () => {
           Tutors Portal
         </Text>
 
-        {/* Form */}
+        {/* 新增 First Name 欄位 */}
+        <FormControl id="firstName" isRequired mb="4">
+          <FormLabel>First Name</FormLabel>
+          <Input
+            placeholder="Enter your first name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </FormControl>
+
+        {/* 新增 Last Name 欄位 */}
+        <FormControl id="lastName" isRequired mb="4">
+          <FormLabel>Last Name</FormLabel>
+          <Input
+            placeholder="Enter your last name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </FormControl>
+
         <FormControl id="course" isRequired mb="4">
           <FormLabel>Course to Apply</FormLabel>
           <Select
@@ -110,12 +156,7 @@ const Tutors = () => {
           />
         </FormControl>
 
-        <Button
-          colorScheme="purple"
-          width="100%"
-          mt="6"
-          onClick={handleApply}
-        >
+        <Button colorScheme="purple" width="100%" mt="6" onClick={handleApply}>
           Apply
         </Button>
       </Box>
@@ -124,3 +165,4 @@ const Tutors = () => {
 };
 
 export default Tutors;
+
