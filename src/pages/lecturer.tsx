@@ -34,7 +34,7 @@ type Applicant = {
   comment?: string;
 };
 
-// 將 useApplicantStats 自定義 Hook 內嵌在此檔案內
+// custom Hook useApplicantStats
 function useApplicantStats(applicants: Applicant[]) {
   return useMemo(() => {
     // 過濾出已被選擇且已有排名的申請人
@@ -46,17 +46,15 @@ function useApplicantStats(applicants: Applicant[]) {
     let leastChosen: Applicant | null = null;
 
     if (selectedWithRank.length > 0) {
-      // 假設 rank 數字越小越受青睞
+      // Assume that the smaller the rank number, the more favored it is.
       mostChosen = selectedWithRank.reduce((prev, curr) =>
         curr.rank! < prev.rank! ? curr : prev
       );
-      // 而較大的 rank 就代表最不受青睞
       leastChosen = selectedWithRank.reduce((prev, curr) =>
         curr.rank! > prev.rank! ? curr : prev
       );
     }
 
-    // 過濾出未被選擇者
     const notSelected = applicants.filter((app) => !app.isSelected);
 
     return { mostChosen, leastChosen, notSelected };
