@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import {
   Box,
   Button,
@@ -9,15 +9,17 @@ import {
   Link as ChakraLink,
   useToast,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router"; // Import useRouter for navigation
+import { useRouter } from "next/router";
+import ReCAPTCHA from "react-google-recaptcha";
 
-const Signin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Signin: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const toast = useToast();
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
-  // Dummy data stored in localStorage
+  // Dummy 資料存到 localStorage，僅用於測試
   if (typeof window !== "undefined") {
     localStorage.setItem(
       "dummyUser",
@@ -25,41 +27,66 @@ const Signin = () => {
     );
   }
 
-  const handleSignin = (e: React.FormEvent) => {
+  // 當 CAPTCHA 完成時會回呼此函式，接收回傳的 token
+  const handleCaptcha = (token: string | null): void => {
+    setCaptchaToken(token);
+    console.log("CAPTCHA Token received:", token); // Debug: 記錄前端獲取的 CAPTCHA Token
+  };
+
+  // 表單送出時的處理函式
+  const handleSignin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Get the dummy user from localStorage
+    // 若尚未取得 CAPTCHA token
+    if (!captchaToken) {
+      toast({
+        title: "CAPTCHA Required",
+        description: "Please complete the CAPTCHA verification.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // 呼叫後端 API 驗證 CAPTCHA token
+    try {
+      console.log("Sending CAPTCHA token to the backend..."); // Debug
+      const res = await fetch("/api/verify-captcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: captchaToken }),
+      });
+
+      // 檢查後端的響應
+      const data = await res.json();
+      console.log("Backend verification response:", data); // Debug: 記錄後端 API 響應
+
+      if (!data.success) {
+        console.error("CAPTCHA verification failed:", data); // Debug
+        toast({
+          title: "CAPTCHA Verification Failed",
+          description: "CAPTCHA verification did not pass.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    } catch (error) {
+      console.error("Error during CAPTCHA verification:", error); // Debug: 記錄錯誤細節
+      toast({
+        title: "Error",
+        description: "Failed to verify CAPTCHA.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // Dummy 使用者驗證邏輯
     const dummyUser = JSON.parse(localStorage.getItem("dummyUser") || "{}");
-
-    // Email and password validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isPasswordStrong =
-      password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password);
-
-    if (!emailRegex.test(email)) {
-      toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    if (!isPasswordStrong) {
-      toast({
-        title: "Weak Password",
-        description:
-          "Password must be at least 8 characters long, include a number, and an uppercase letter.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    // Check if credentials match
     if (email === dummyUser.email && password === dummyUser.password) {
       toast({
         title: "Login Successful",
@@ -68,9 +95,7 @@ const Signin = () => {
         duration: 3000,
         isClosable: true,
       });
-
-      // Redirect to the tutor page
-      router.push("/tutors"); // Use router.push for navigation
+      router.push("/tutors");
     } else {
       toast({
         title: "Invalid Credentials",
@@ -83,38 +108,42 @@ const Signin = () => {
   };
 
   return (
-      <Box maxW="md" mx="auto" mt={8} p={4} borderWidth={1} borderRadius="md">
-        <Text fontSize="2xl" fontWeight="bold" mb={4}>
+    <Box maxW="md" mx="auto" mt={8} p={4} borderWidth={1} borderRadius="md">
+      <Text fontSize="2xl" fontWeight="bold" mb={4}>
+        Sign In
+      </Text>
+      <form onSubmit={handleSignin}>
+        <FormControl id="email" mb={4}>
+          <FormLabel>Email address</FormLabel>
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </FormControl>
+        <FormControl id="password" mb={4}>
+          <FormLabel>Password</FormLabel>
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </FormControl>
+        <ReCAPTCHA
+          sitekey="6LdBgwsrAAAAAEVGPp79WK2DalwAKVfu38siGk10"
+          onChange={handleCaptcha}
+        />
+        <Button type="submit" colorScheme="blue" width="full" mt={4}>
           Sign In
+        </Button>
+        <Text fontSize="sm" textAlign="center">
+          Don’t have an account?{" "}
+          <ChakraLink href="/signup" color="blue.500">
+            Sign up
+          </ChakraLink>
         </Text>
-        <form onSubmit={handleSignin}>
-          <FormControl id="email" mb={4}>
-            <FormLabel>Email address</FormLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FormControl>
-          <FormControl id="password" mb={4}>
-            <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </FormControl>
-          <Button type="submit" colorScheme="blue" width="full" mb={4}>
-            Sign In
-          </Button>
-          <Text fontSize="sm" textAlign="center">
-            Don’t have an account?{" "}
-            <ChakraLink href="/signup" color="blue.500">
-              Sign up
-            </ChakraLink>
-          </Text>
-        </form>
-      </Box>
+      </form>
+    </Box>
   );
 };
 

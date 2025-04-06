@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
 import ApplicantCard from "../components/ApplicantCard";
+
 import {
   Box,
   Button,
@@ -32,6 +33,35 @@ type Applicant = {
   rank?: number;
   comment?: string;
 };
+
+// 將 useApplicantStats 自定義 Hook 內嵌在此檔案內
+function useApplicantStats(applicants: Applicant[]) {
+  return useMemo(() => {
+    // 過濾出已被選擇且已有排名的申請人
+    const selectedWithRank = applicants.filter(
+      (app) => app.isSelected && typeof app.rank === "number"
+    );
+
+    let mostChosen: Applicant | null = null;
+    let leastChosen: Applicant | null = null;
+
+    if (selectedWithRank.length > 0) {
+      // 假設 rank 數字越小越受青睞
+      mostChosen = selectedWithRank.reduce((prev, curr) =>
+        curr.rank! < prev.rank! ? curr : prev
+      );
+      // 而較大的 rank 就代表最不受青睞
+      leastChosen = selectedWithRank.reduce((prev, curr) =>
+        curr.rank! > prev.rank! ? curr : prev
+      );
+    }
+
+    // 過濾出未被選擇者
+    const notSelected = applicants.filter((app) => !app.isSelected);
+
+    return { mostChosen, leastChosen, notSelected };
+  }, [applicants]);
+}
 
 const courses = [
   { code: "COSC1010", name: "Database Concepts" },
@@ -167,6 +197,8 @@ export default function LecturerPage() {
   const filteredConfirmed = finalSelected
     .filter((app) => applyFilters(app) && showConfirmed)
     .sort((a, b) => (a.rank || 999) - (b.rank || 999));
+
+  const { mostChosen, leastChosen, notSelected } = useApplicantStats(applicants);
 
   return (
     <Box maxW="800px" mx="auto" py={10} px={4}>
@@ -328,6 +360,47 @@ export default function LecturerPage() {
           ))}
         </Box>
       )}
+      {/* Confirmed Applicants Section */}
+      {showConfirmed && finalSelected.length > 0 && (
+        <Box mt={10}>
+        <Heading size="md" mb={4}>
+          Visual Representation
+        </Heading>
+
+
+        <Box mb={3} p={4} border="1px solid #ccc" borderRadius="md" bg ="gray.50">
+          <Box mb={2}>
+            <Text>
+              Most Chosen Applicant:{" "}
+              {mostChosen
+                ? `${mostChosen.firstName} ${mostChosen.lastName} (Rank: ${mostChosen.rank})`
+                : "Not available"}
+            </Text>
+          </Box>
+          <Box mb={2}>
+            <Text>
+              Least Chosen Applicant:{" "}
+              {leastChosen
+                ? `${leastChosen.firstName} ${leastChosen.lastName} (Rank: ${leastChosen.rank})`
+                : "Not available"}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontWeight="bold">Applicants Not Selected:</Text>
+            {notSelected.length > 0 ? (
+              notSelected.map((app) => (
+                <Text key={app.id}>
+                  {app.firstName} {app.lastName}
+                </Text>
+              ))
+            ) : (
+              <Text>None</Text>
+            )}
+          </Box>
+        </Box>
+    
+    </Box>
+  )}
     </Box>
   );
 }
