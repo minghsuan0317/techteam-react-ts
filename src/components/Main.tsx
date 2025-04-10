@@ -23,11 +23,6 @@ export default function Main() {
         <Box bg="white" p={6} borderRadius="lg" boxShadow="md">
           <Stack spacing={4}>
             <Heading size="md">Tutor</Heading>
-            <NextLink href="/login" passHref>
-              <Button colorScheme="blue" width="fit-content">
-                Let's go
-              </Button>
-            </NextLink>
             <Text fontSize="sm">
               for applicants who want to become casual tutors. Fill in your
               background, skills, and availability.
@@ -39,11 +34,6 @@ export default function Main() {
         <Box bg="white" p={6} borderRadius="lg" boxShadow="md">
           <Stack spacing={4}>
             <Heading size="md">Lecturer</Heading>
-            <NextLink href="/login" passHref>
-              <Button colorScheme="blue" width="fit-content">
-                Let's go
-              </Button>
-            </NextLink>
             <Text fontSize="sm">
               for lecturers to review applicants, leave comments, and manage
               tutor selections.

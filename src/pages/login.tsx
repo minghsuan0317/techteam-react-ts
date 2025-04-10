@@ -21,8 +21,19 @@ const Signin: React.FC = () => {
 
   if (typeof window !== "undefined") {
     localStorage.setItem(
-      "dummyUser",
-      JSON.stringify({ email: "test@example.com", password: "Password123!" })
+      "users",
+      JSON.stringify([
+        {
+          email: "tutor@example.com",
+          password: "Password123!",
+          role: "tutor",
+        },
+        {
+          email: "lecturer@example.com",
+          password: "Password567!",
+          role: "lecturer",
+        },
+      ])
     );
   }
 
@@ -79,25 +90,36 @@ const Signin: React.FC = () => {
       return;
     }
 
-    const dummyUser = JSON.parse(localStorage.getItem("dummyUser") || "{}");
-    if (email === dummyUser.email && password === dummyUser.password) {
-      toast({
-        title: "Login Successful",
-        description: "Welcome back!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      router.push("/tutors");
+  const users = JSON.parse(localStorage.getItem("users") || "[]");
+  const foundUser = users.find(
+    (user: any) => user.email === email && user.password === password
+  );
+
+  if (foundUser) {
+    toast({
+      title: "Login Successful",
+      description: `Welcome back, ${foundUser.role}!`,
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+
+    localStorage.setItem("currentUser", JSON.stringify(foundUser));
+
+    if (foundUser.role === "lecturer") {
+      router.push("/lecturer");
     } else {
-      toast({
-        title: "Invalid Credentials",
-        description: "Email or password is incorrect.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      router.push("/tutors");
     }
+  } else {
+    toast({
+      title: "Invalid Credentials",
+      description: "Email or password is incorrect.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+  }
   };
 
   return (

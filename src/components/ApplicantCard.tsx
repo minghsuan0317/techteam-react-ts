@@ -55,7 +55,8 @@ export default function ApplicantCard({
         </Text>
       </Checkbox>
 
-      <Text fontWeight="bold">Availability: {applicant.availability}</Text>
+      <Text fontWeight="bold">Course: {applicant.course}</Text>
+      <Text>Availability: {applicant.availability}</Text>
       <Text>Academic Credentials: {applicant.academicCredentials}</Text>
       <Text>Previous Roles: {applicant.previousRoles || "N/A"}</Text>
 
