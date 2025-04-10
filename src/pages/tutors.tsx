@@ -10,6 +10,8 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Tutors = () => {
   const [firstName, setFirstName] = useState("");
@@ -20,6 +22,27 @@ const Tutors = () => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [previousRoles, setPreviousRoles] = useState("");
   const toast = useToast();
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (!storedUser) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const user = JSON.parse(storedUser);
+      if (user.role !== "tutor") {
+        console.error("You are not authorized to access this page.");
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Invalid user data in localStorage");
+      router.push("/login");
+    }
+  }, [router]);
+
 
   const courses = [
     { code: "COSC1010", name: "Database Concepts" },

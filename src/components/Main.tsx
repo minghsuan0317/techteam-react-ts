@@ -1,21 +1,17 @@
 import NextLink from "next/link";
 import {
   Box,
-  Button,
   Heading,
-  Image,
   SimpleGrid,
   Stack,
   Text,
+  UnorderedList,
+  ListItem,
 } from "@chakra-ui/react";
 
 export default function Main() {
   return (
-    <Box px={6} py={12} bg="gray.50">
-      <Heading as="h2" size="xl" mb={8} textAlign="center">
-        Get started.
-      </Heading>
-
+    <Box px={6} py={12} >
       {/* Use SimpleGrid to make two columns
       it will automatically change to one column on mobile) */}
       <SimpleGrid columns={[1, null, 2]} spacing={10} maxW="1200px" mx="auto">
@@ -23,10 +19,13 @@ export default function Main() {
         <Box bg="white" p={6} borderRadius="lg" boxShadow="md">
           <Stack spacing={4}>
             <Heading size="md">Tutor</Heading>
-            <Text fontSize="sm">
-              for applicants who want to become casual tutors. Fill in your
-              background, skills, and availability.
-            </Text>
+            <Text>Apply to become a tutor by submitting your profile:</Text>
+            <UnorderedList spacing={2}>
+              <ListItem>Availability & skills</ListItem>
+              <ListItem>Academic background</ListItem>
+              <ListItem>Past teaching experience</ListItem>
+              <ListItem>Easy online form submission</ListItem>
+            </UnorderedList>
           </Stack>
         </Box>
 
@@ -34,10 +33,15 @@ export default function Main() {
         <Box bg="white" p={6} borderRadius="lg" boxShadow="md">
           <Stack spacing={4}>
             <Heading size="md">Lecturer</Heading>
-            <Text fontSize="sm">
-              for lecturers to review applicants, leave comments, and manage
-              tutor selections.
+            <Text>
+              Manage tutor applications and make decisions:
             </Text>
+            <UnorderedList spacing={2}>
+              <ListItem>Review applicant details</ListItem>
+              <ListItem>Filter by course, availability & skills</ListItem>
+              <ListItem>Assign ranking & write feedback</ListItem>
+              <ListItem>Confirm your tutor selections</ListItem>
+            </UnorderedList>
           </Stack>
         </Box>
       </SimpleGrid>
