@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
 
 import ApplicantCard from "../components/ApplicantCard";
 
@@ -37,7 +38,6 @@ type Applicant = {
 // custom Hook useApplicantStats
 function useApplicantStats(applicants: Applicant[]) {
   return useMemo(() => {
-    // 過濾出已被選擇且已有排名的申請人
     const selectedWithRank = applicants.filter(
       (app) => app.isSelected && typeof app.rank === "number"
     );
@@ -80,6 +80,26 @@ export default function LecturerPage() {
   const [showPending, setShowPending] = useState(true);
   const [showConfirmed, setShowConfirmed] = useState(true);
   const [sortField, setSortField] = useState<string>("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (!storedUser) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const user = JSON.parse(storedUser);
+      if (user.role !== "lecturer") {
+        console.error("You are not authorized to access this page.");
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Invalid user data in localStorage");
+      router.push("/login");
+    }
+  }, [router]);
 
   // When tha page open, read the data in localStorage
   useEffect(() => {
@@ -196,7 +216,8 @@ export default function LecturerPage() {
     .filter((app) => applyFilters(app) && showConfirmed)
     .sort((a, b) => (a.rank || 999) - (b.rank || 999));
 
-  const { mostChosen, leastChosen, notSelected } = useApplicantStats(applicants);
+  const { mostChosen, leastChosen, notSelected } =
+    useApplicantStats(applicants);
 
   return (
     <Box maxW="800px" mx="auto" py={10} px={4}>
@@ -361,44 +382,48 @@ export default function LecturerPage() {
       {/* Confirmed Applicants Section */}
       {showConfirmed && finalSelected.length > 0 && (
         <Box mt={10}>
-        <Heading size="md" mb={4}>
-          Visual Representation
-        </Heading>
+          <Heading size="md" mb={4}>
+            Visual Representation
+          </Heading>
 
-
-        <Box mb={3} p={4} border="1px solid #ccc" borderRadius="md" bg ="gray.50">
-          <Box mb={2}>
-            <Text>
-              Most Chosen Applicant:{" "}
-              {mostChosen
-                ? `${mostChosen.firstName} ${mostChosen.lastName} (Rank: ${mostChosen.rank})`
-                : "Not available"}
-            </Text>
-          </Box>
-          <Box mb={2}>
-            <Text>
-              Least Chosen Applicant:{" "}
-              {leastChosen
-                ? `${leastChosen.firstName} ${leastChosen.lastName} (Rank: ${leastChosen.rank})`
-                : "Not available"}
-            </Text>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">Applicants Not Selected:</Text>
-            {notSelected.length > 0 ? (
-              notSelected.map((app) => (
-                <Text key={app.id}>
-                  {app.firstName} {app.lastName}
-                </Text>
-              ))
-            ) : (
-              <Text>None</Text>
-            )}
+          <Box
+            mb={3}
+            p={4}
+            border="1px solid #ccc"
+            borderRadius="md"
+            bg="gray.50"
+          >
+            <Box mb={2}>
+              <Text>
+                Most Chosen Applicant:{" "}
+                {mostChosen
+                  ? `${mostChosen.firstName} ${mostChosen.lastName} (Rank: ${mostChosen.rank})`
+                  : "Not available"}
+              </Text>
+            </Box>
+            <Box mb={2}>
+              <Text>
+                Least Chosen Applicant:{" "}
+                {leastChosen
+                  ? `${leastChosen.firstName} ${leastChosen.lastName} (Rank: ${leastChosen.rank})`
+                  : "Not available"}
+              </Text>
+            </Box>
+            <Box>
+              <Text fontWeight="bold">Applicants Not Selected:</Text>
+              {notSelected.length > 0 ? (
+                notSelected.map((app) => (
+                  <Text key={app.id}>
+                    {app.firstName} {app.lastName}
+                  </Text>
+                ))
+              ) : (
+                <Text>None</Text>
+              )}
+            </Box>
           </Box>
         </Box>
-    
-    </Box>
-  )}
+      )}
     </Box>
   );
 }
