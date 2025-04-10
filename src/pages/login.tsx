@@ -24,7 +24,7 @@ const Signin: React.FC = () => {
       "users",
       JSON.stringify([
         {
-          email: "test@example.com",
+          email: "tutor@example.com",
           password: "Password123!",
           role: "tutor",
         },
