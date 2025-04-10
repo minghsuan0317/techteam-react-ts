@@ -4,63 +4,88 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
-  const router = useRouter(); // Get router instance
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
 
-  // Monitor path and update login state
   useEffect(() => {
-    if (router.pathname === "/tutors") {
-      setIsLoggedIn(true); // Assume user is logged in if on tutors page
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      setUser(null);
     }
   }, [router.pathname]);
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    router.push("/"); // Redirect to main page
+    localStorage.removeItem("currentUser");
+    setUser(null);
+    router.push("/");
   };
 
   return (
     <Flex align="center">
-      {/* Left side: Website Name */}
+      {/* Logo button to the home page */}
       <Link as={NextLink} href="/" _hover={{ textDecoration: "none" }}>
-        <Text fontWeight="bold" fontSize="lg">TeachTeam</Text>
+        <Text fontWeight="bold" fontSize="lg">
+          TeachTeam
+        </Text>
       </Link>
-
-      {/* Middle: Navigation menu */}
-      <HStack spacing={6} ml={10}>
-        <Link as={NextLink} href="/" fontSize="sm">Home</Link>
-        <Link as={NextLink} href="/about" fontSize="sm">About</Link>
-        <Link as={NextLink} href="/courses" fontSize="sm">Courses</Link>
-      </HStack>
 
       <Spacer />
 
-      {/* Right side: Login/Logout */}
       <HStack spacing={4}>
-        <Button as={NextLink} href="/signup" size="sm" variant="outline">Sign up</Button>
-        {isLoggedIn ? (
-          <Button
-            size="sm"
-            color="white"
-            bg="black"
-            _hover={{ bg: "gray.700" }}
-            borderRadius="md"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
-        ) : (
-          <Button
-            as={NextLink}
-            href="/login"
-            size="sm"
-            color="white"
-            bg="black"
-            _hover={{ bg: "gray.700" }}
-            borderRadius="md"
-          >
-            Log in
-          </Button>
+        {!user && (
+          <>
+            <Button as={NextLink} href="/signup" size="sm" variant="outline">
+              Sign up
+            </Button>
+            <Button
+              as={NextLink}
+              href="/login"
+              size="sm"
+              color="white"
+              bg="black"
+              _hover={{ bg: "gray.700" }}
+            >
+              Log in
+            </Button>
+          </>
+        )}
+
+        {/* When Lecturer logging in */}
+        {user?.role === "lecturer" && (
+          <>
+            <Link as={NextLink} href="/lecturer" fontSize="sm">
+              Lecturer Dashboard
+            </Link>
+            <Button
+              size="sm"
+              onClick={handleLogout}
+              color="white"
+              bg="black"
+              _hover={{ bg: "gray.700" }}
+            >
+              Logout
+            </Button>
+          </>
+        )}
+
+        {/* When Tutor logging in */}
+        {user?.role === "tutor" && (
+          <>
+            <Link as={NextLink} href="/tutors" fontSize="sm">
+              Tutor Dashboard
+            </Link>
+            <Button
+              size="sm"
+              onClick={handleLogout}
+              color="white"
+              bg="black"
+              _hover={{ bg: "gray.700" }}
+            >
+              Logout
+            </Button>
+          </>
         )}
       </HStack>
     </Flex>

@@ -84,10 +84,7 @@ const Signup: React.FC = () => {
       return;
     }
 
-    localStorage.setItem(
-      "dummyUser",
-      JSON.stringify({ email, password })
-    );
+    localStorage.setItem("users", JSON.stringify({ email, password }));
 
     toast({
       title: "Account Created",
