@@ -1,0 +1,21 @@
+/**
+ * This is a special config file just for running tests with Jest.
+ *
+ * In Next.js, the default "tsconfig.json" uses `"jsx": "preserve"`.
+ * `"preserve"` means JSX is not changed yet, and Next.js will handle it
+ *
+ * But for Jest doesn't know how to handle that.
+ * So we need to change it to `"react-jsx"` for Jest to understand JSX.
+ *
+ * This tells TypeScript to compile JSX before running the tests,
+ * So Jest can understand and run them correctly!
+ *
+ */
+
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  },
+  "include": ["src", "tests"]
+}
