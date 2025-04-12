@@ -1,0 +1,95 @@
+
+/** Mock user accounts for login (stored in localStorage as "users") */
+export const DEFAULT_USERS = [
+  { email: "tutor@example.com", password: "Password123!", role: "tutor" },
+  { email: "lecturer@example.com", password: "Password567!", role: "lecturer" },
+];
+
+/** Mock tutor applications (stored in localStorage as "tutorApplications") */
+export const DEFAULT_APPLICATIONS = [
+  {
+    firstName: "Rachel",
+    lastName: "Green",
+    course: "COSC1010",
+    availability: "Full Time",
+    skills: "JavaScript, React, CSS",
+    academicCredentials: "Bachelor of Computer Science",
+    previousRoles: "Web Dev Tutor",
+  },
+  {
+    firstName: "Ross",
+    lastName: "Geller",
+    course: "COSC1220",
+    availability: "Part Time",
+    skills: "AWS, Docker, Node.js",
+    academicCredentials: "Master of IT",
+    previousRoles: "Cloud Engineer Intern",
+  },
+  {
+    firstName: "Monica",
+    lastName: "Geller",
+    course: "COSC1330",
+    availability: "Full Time",
+    skills: "Java, Algorithms, Data Structures",
+    academicCredentials: "Bachelor of Software Engineering",
+  },
+  {
+    firstName: "Chandler",
+    lastName: "Bing",
+    course: "COSC2020",
+    availability: "Part Time",
+    skills: "Python, Pandas, SQL",
+    academicCredentials: "Master of Data Science",
+    previousRoles: "Data Assistant",
+  },
+  {
+    firstName: "Phoebe",
+    lastName: "Buffay",
+    course: "COSC3030",
+    availability: "Full Time",
+    skills: "React, TypeScript, HTML",
+    academicCredentials: "Bachelor of IT",
+    previousRoles: "Teaching Assistant",
+  },
+  {
+    firstName: "Joey",
+    lastName: "Tribbiani",
+    course: "COSC4040",
+    availability: "Full Time",
+    skills: "Machine Learning, AI, TensorFlow",
+    academicCredentials: "PhD in AI",
+  },
+  {
+    firstName: "Janice",
+    lastName: "Litman",
+    course: "COSC1010",
+    availability: "Part Time",
+    skills: "MySQL, ERD, SQL",
+    academicCredentials: "Master of Information Systems",
+  },
+  {
+    firstName: "Gunther",
+    lastName: "Centralperk",
+    course: "COSC1220",
+    availability: "Full Time",
+    skills: "Linux, Bash, DevOps",
+    academicCredentials: "Bachelor of Network Engineering",
+  },
+  {
+    firstName: "Carol",
+    lastName: "Willick",
+    course: "COSC1330",
+    availability: "Part Time",
+    skills: "C++, Data Structures, Sorting",
+    academicCredentials: "Bachelor of Computer Science",
+    previousRoles: "Algorithms Tutor",
+  },
+  {
+    firstName: "Mike",
+    lastName: "Hannigan",
+    course: "COSC3030",
+    availability: "Full Time",
+    skills: "React, Tailwind, UX/UI",
+    academicCredentials: "Bachelor of Digital Design",
+  },
+];
