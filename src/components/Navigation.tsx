@@ -73,7 +73,7 @@ export default function Navbar() {
         {/* When Tutor logging in */}
         {user?.role === "tutor" && (
           <>
-            <Link as={NextLink} href="/tutors" fontSize="sm">
+            <Link as={NextLink} href="/tutor" fontSize="sm">
               Tutor Dashboard
             </Link>
             <Button

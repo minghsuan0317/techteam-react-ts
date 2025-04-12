@@ -1,9 +1,36 @@
+/***************************************************************
+ * Lecturer Page
+ *
+ * This is the main dashboard for lecturers.
+ * It allows a lecturer to:
+ * - View all tutor applications
+ * - Filter applicants by course, availability, skills, and name
+ * - Sort applicants by course or availability
+ * - Select applicants and assign them a rank or comment
+ * - Confirm selection and see visual summaries
+ *
+ * This page checks if the current user is logged in and has the "lecturer" role.
+ * If not, it will redirect them to the login page.
+ * Then, it loads applicant data from localStorage and updates it when changes happen.
+ *
+ * All confirmed applicants are saved separately into localStorage under "finalSelected",
+ * so even if the page reloads, confirmed choices are not lost.
+ *
+ * The applicants are divided into two sections:
+ * - Pending Applicants (not yet selected)
+ * - Confirmed Applicants (with rank and comment)
+ *
+ * There's also a "Visual Representation" at the bottom showing:
+ * - Most chosen applicant
+ * - Least chosen applicant
+ * - Applicants who were not selected at all
+ ***************************************************************/
+
+
 import { useMemo, useState, useEffect } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
-
 import ApplicantCard from "../components/ApplicantCard";
-
 import {
   Box,
   Button,
@@ -20,7 +47,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-// Applicant type definition
+// The data structure of applicants (some fields are optional)
 type Applicant = {
   id: number;
   firstName: string;
@@ -221,11 +248,11 @@ export default function LecturerPage() {
 
   return (
     <Box maxW="800px" mx="auto" py={10} px={4}>
-      <Heading as="h1" mb={6} textAlign="center">
+      <Heading as="h1" mb={4} textAlign="center">
         Lecturer Dashboard
       </Heading>
 
-      <Text fontSize="md" mb={4} textAlign="center">
+      <Text fontSize="md" mb={8} textAlign="center">
         Select a course to view and manage tutor applicants.
       </Text>
 

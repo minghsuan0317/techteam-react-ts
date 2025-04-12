@@ -3,7 +3,7 @@ import { Box, Heading, Text, Stack } from "@chakra-ui/react";
 // The big topic area at the top of the homepage
 export default function Hero() {
   return (
-    <Box bg="teal.500" color="white" py={20} textAlign="center">
+    <Box bg="brand.500" color="white" py={20} textAlign="center">
       <Stack spacing={4}>
 
         {/* main title */}
