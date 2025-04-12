@@ -1,34 +1,39 @@
-# TeachTeam<br>(React + TypeScript client-side web prototype)
+# TeachTeam<br>(React + TS client-side web prototype)
 
-This is the front-end prototype for the TeachTeam system.
-It is built with **React + TypeScript** and uses **Chakra UI** for styling.
+This project is **Assignment 1** for **COSC2938 Further Web Programming** course at RMIT. It's a front-end prototype for the TeachTeam system, built using **React + TypeScript** and styled with **Chakra UI**. All data is stored in **localStorage**, and the project follows all the assignment requirements.
 
-🎓 This project is **Assignment 1** for the RMIT course:
-- COSC2938: Full Stack Development
+## 🔗 Github URL
+https://github.com/rmit-fsd-2025-s1/s4055813-s3989875-a1.git
 
-👥 This project is developed by:
-- **s4055813:** Ming Hsuan Chen (Ming)
-- **s3989875:** Zih Han Liao (Arina)
+## 👥 Team Members & Contributions
 
-✅ This project follows all assignment rules:
-- No JavaScript
-- No database
-- No pre-built templates
-- Only uses client-side code
+- **s4055813** Ming Hsuan Chen (Ming)
+  - Styling and content of pages
+  - Lecturer Dashboard page
+  - Additional features for lecturers (filters, sort, visual summary)
+  - Unit tests (`ApplicantCard`)
+  - Write `README.md` and organize project structure.
+
+- **s3989875** Zih Han Liao (Arina)
+  - Sign-up & Sign-in flow
+  - Tutor application page
+  - Visual representation section
+  - Unit tests (`login`, `signup`)
+
 
 ## 🔧 Tech Stack
 
-- [Next.js](https://nextjs.org/) (React framework)
+- [Next.js](https://nextjs.org/) + [React](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Chakra UI](https://chakra-ui.com/) (UI Component Library)
 - [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/) (Unit Testing)
 - [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) (Data storage)
 
-## 👤 Roles & Access
+## 👤 Roles
 
 - **Tutor**: Aspiring tutor can log in and fill out a form to apply for a tutor position.
 
-- **Lecturer**: Academic staff can log in to see all tutor applications and manage them.
+- **Lecturer**: Lecturer can log in to see all tutor applications and manage them.
 
 ## 📚 Key Features
 
@@ -42,9 +47,9 @@ It is built with **React + TypeScript** and uses **Chakra UI** for styling.
 - **Lecturer**:
 
   - Role-based redirection after login
-  - Filter applicants by: Course, Name, Availability, Skills
-  - Sort applicants by course, name and availability
-  - Select candidates to shortlist
+  - Filter applicants by course, availability, skills and name
+  - Sort applicants by course and availability
+  - Select applicants to confirmed section
     - Assign rankings (1–10)
     - Add comments
     - Confirm selections
@@ -82,7 +87,7 @@ Open your browser at: http://localhost:3000
 
 ## 🧪 Unit Tests
 
-Implemented using Jest + React Testing Library.
+Implemented using **Jest + React Testing Library**.
 
 Test files are located in: `src/tests/`
 
@@ -94,6 +99,7 @@ npm run test
 ## 🗂️ Project Structure
 
 - `components/` – Reusable UI components (Header, Footer, Hero, Layout, Main, Navigation, ApplicantCard)
-- `pages/` – Routing pages (index, login, signup, lecturer, tutors)
-- `tests/` – Unit tests
+- `data/` – Contains data of mock users and applications  (used to initialize localStorage)
+- `pages/` – Routing pages (index, login, signup, lecturer, tutor)
+- `tests/` – Unit tests for ApplicantCard, signup and login
 - `theme` – Chakra UI theme configuration
