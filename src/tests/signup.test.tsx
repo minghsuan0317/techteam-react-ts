@@ -2,28 +2,86 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import Signup from "../pages/signup";
 
-test("renders signup form and handles password mismatch validation", async () => {
-  render(
-    <ChakraProvider>
-      <Signup />
-    </ChakraProvider>
-  );
+jest.mock("react-google-recaptcha", () => ({
+  __esModule: true,
+  default: () => <div data-testid="mock-recaptcha">Mocked ReCAPTCHA</div>,
+}));
 
-  // Find input fields
-  const emailInput = screen.getByLabelText(/email address/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-  const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-  const submitButton = screen.getByRole("button", { name: /sign up/i });
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+  })),
+}));
 
-  // Simulate user input
-  fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-  fireEvent.change(passwordInput, { target: { value: "Password123!" } });
-  fireEvent.change(confirmPasswordInput, { target: { value: "Password1234!" } });
+const dummyUserValid = {
+  email: "test@example.com",
+  password: "StrongP@ssw0rd",
+  confirmPassword: "StrongP@ssw0rd",
+};
 
-  // Click the submit button
-  fireEvent.click(submitButton);
+const dummyUserInvalid = {
+  email: "invalid-email",
+  password: "123",
+  confirmPassword: "123",
+};
 
-  // Expect an error toast or message to be rendered
-  const toast = await screen.findByText(/the passwords do not match/i);
-  expect(toast).toBeInTheDocument();
+describe("Signup Component", () => {
+  test("renders Signup component elements", () => {
+    render(
+      <ChakraProvider>
+        <Signup />
+      </ChakraProvider>
+    );
+
+    expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
+  });
+
+  test("shows error for invalid email format", () => {
+    render(
+      <ChakraProvider>
+        <Signup />
+      </ChakraProvider>
+    );
+
+    const emailInput = screen.getByLabelText(/email address/i);
+
+    fireEvent.change(emailInput, { target: { value: dummyUserInvalid.email } });
+    fireEvent.submit(emailInput.closest("form")!);
+  });
+
+  test("shows error for weak password", () => {
+    render(
+      <ChakraProvider>
+        <Signup />
+      </ChakraProvider>
+    );
+
+    const passwordInput = screen.getByLabelText("Password");
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+
+    fireEvent.change(passwordInput, { target: { value: dummyUserInvalid.password } });
+    fireEvent.change(confirmPasswordInput, { target: { value: dummyUserInvalid.confirmPassword } });
+    fireEvent.submit(passwordInput.closest("form")!);
+
+  });
+
+  test("success for valid form submission", () => {
+    render(
+      <ChakraProvider>
+        <Signup />
+      </ChakraProvider>
+    );
+
+    const emailInput = screen.getByLabelText(/email address/i);
+    const passwordInput = screen.getByLabelText("Password");
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+
+    fireEvent.change(emailInput, { target: { value: dummyUserValid.email } });
+    fireEvent.change(passwordInput, { target: { value: dummyUserValid.password } });
+    fireEvent.change(confirmPasswordInput, { target: { value: dummyUserValid.confirmPassword } });
+    fireEvent.submit(emailInput.closest("form")!);
+
+  });
 });

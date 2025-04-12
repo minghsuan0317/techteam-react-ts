@@ -28,6 +28,34 @@ const Signup: React.FC = () => {
   const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid Email Format",
+        description: "Please enter a valid email address.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // Validate password strength
+    const strongPasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!strongPasswordRegex.test(password)) {
+      toast({
+        title: "Weak Password",
+        description:
+          "Password must be at least 8 characters long and include uppercase, lowercase, numbers, and special characters.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // Check CAPTCHA token
     if (!captchaToken) {
       toast({
         title: "CAPTCHA Required",
@@ -39,6 +67,7 @@ const Signup: React.FC = () => {
       return;
     }
 
+    // Check password match
     if (password !== confirmPassword) {
       toast({
         title: "Password Mismatch",
@@ -51,7 +80,7 @@ const Signup: React.FC = () => {
     }
 
     try {
-      console.log("Sending CAPTCHA token to the backend...");
+      // Verify CAPTCHA token with backend
       const res = await fetch("/api/verify-captcha", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -59,10 +88,7 @@ const Signup: React.FC = () => {
       });
 
       const data = await res.json();
-      console.log("Backend verification response:", data);
-
       if (!data.success) {
-        console.error("CAPTCHA verification failed:", data);
         toast({
           title: "CAPTCHA Verification Failed",
           description: "CAPTCHA verification did not pass.",
@@ -73,7 +99,6 @@ const Signup: React.FC = () => {
         return;
       }
     } catch (error) {
-      console.error("Error during CAPTCHA verification:", error);
       toast({
         title: "Error",
         description: "Failed to verify CAPTCHA.",
@@ -84,8 +109,10 @@ const Signup: React.FC = () => {
       return;
     }
 
+    // Store user data (for demo purposes only)
     localStorage.setItem("users", JSON.stringify({ email, password }));
 
+    // Show success message
     toast({
       title: "Account Created",
       description: "Your account has been successfully created!",
@@ -94,6 +121,7 @@ const Signup: React.FC = () => {
       isClosable: true,
     });
 
+    // Redirect to the signin page
     router.push("/signin");
   };
 
@@ -134,7 +162,7 @@ const Signup: React.FC = () => {
         <Button type="submit" colorScheme="blue" width="full" mt={4}>
           Sign Up
         </Button>
-        <Text fontSize="sm" textAlign="center">
+        <Text fontSize="sm" textAlign="center" mt={2}>
           Already have an account?{" "}
           <ChakraLink href="/signin" color="blue.500">
             Sign in
