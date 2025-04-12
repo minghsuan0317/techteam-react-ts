@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ReCAPTCHA from "react-google-recaptcha";
+import { DEFAULT_USERS } from "../data/defaultData";
 
 const Signin: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -19,23 +20,14 @@ const Signin: React.FC = () => {
   const toast = useToast();
   const router = useRouter();
 
-  if (typeof window !== "undefined") {
-    localStorage.setItem(
-      "users",
-      JSON.stringify([
-        {
-          email: "tutor@example.com",
-          password: "Password123!",
-          role: "tutor",
-        },
-        {
-          email: "lecturer@example.com",
-          password: "Password567!",
-          role: "lecturer",
-        },
-      ])
-    );
-  }
+  // Check if mock users are already in localStorage,
+  // if not, set mock users from DEFAULT_USERS
+  useEffect(() => {
+    const existing = localStorage.getItem("users");
+    if (!existing) {
+      localStorage.setItem("users", JSON.stringify(DEFAULT_USERS));
+    }
+  }, []);
 
   const handleCaptcha = (token: string | null): void => {
     setCaptchaToken(token);
@@ -90,36 +82,36 @@ const Signin: React.FC = () => {
       return;
     }
 
-  const users = JSON.parse(localStorage.getItem("users") || "[]");
-  const foundUser = users.find(
-    (user: any) => user.email === email && user.password === password
-  );
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const foundUser = users.find(
+      (user: any) => user.email === email && user.password === password
+    );
 
-  if (foundUser) {
-    toast({
-      title: "Login Successful",
-      description: `Welcome back, ${foundUser.role}!`,
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    if (foundUser) {
+      toast({
+        title: "Login Successful",
+        description: `Welcome back, ${foundUser.role}!`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
 
-    localStorage.setItem("currentUser", JSON.stringify(foundUser));
+      localStorage.setItem("currentUser", JSON.stringify(foundUser));
 
-    if (foundUser.role === "lecturer") {
-      router.push("/lecturer");
+      if (foundUser.role === "lecturer") {
+        router.push("/lecturer");
+      } else {
+        router.push("/tutor");
+      }
     } else {
-      router.push("/tutors");
+      toast({
+        title: "Invalid Credentials",
+        description: "Email or password is incorrect.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-  } else {
-    toast({
-      title: "Invalid Credentials",
-      description: "Email or password is incorrect.",
-      status: "error",
-      duration: 3000,
-      isClosable: true,
-    });
-  }
   };
 
   return (
