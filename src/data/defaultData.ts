@@ -15,6 +15,7 @@ export const DEFAULT_APPLICATIONS = [
     skills: "JavaScript, React, CSS",
     academicCredentials: "Bachelor of Computer Science",
     previousRoles: "Web Dev Tutor",
+    id: 1743835778918,
   },
   {
     firstName: "Ross",
@@ -24,6 +25,7 @@ export const DEFAULT_APPLICATIONS = [
     skills: "AWS, Docker, Node.js",
     academicCredentials: "Master of IT",
     previousRoles: "Cloud Engineer Intern",
+    id: 1743835778919,
   },
   {
     firstName: "Monica",
@@ -32,6 +34,8 @@ export const DEFAULT_APPLICATIONS = [
     availability: "Full Time",
     skills: "Java, Algorithms, Data Structures",
     academicCredentials: "Bachelor of Software Engineering",
+    previousRoles: "Software Engineer",
+    id: 1743835778920,
   },
   {
     firstName: "Chandler",
@@ -41,6 +45,7 @@ export const DEFAULT_APPLICATIONS = [
     skills: "Python, Pandas, SQL",
     academicCredentials: "Master of Data Science",
     previousRoles: "Data Assistant",
+    id: 1743835778921,
   },
   {
     firstName: "Phoebe",
@@ -50,6 +55,7 @@ export const DEFAULT_APPLICATIONS = [
     skills: "React, TypeScript, HTML",
     academicCredentials: "Bachelor of IT",
     previousRoles: "Teaching Assistant",
+    id: 1743835778922,
   },
   {
     firstName: "Joey",
@@ -58,6 +64,8 @@ export const DEFAULT_APPLICATIONS = [
     availability: "Full Time",
     skills: "Machine Learning, AI, TensorFlow",
     academicCredentials: "PhD in AI",
+    previousRoles: "Research Assistant",
+    id: 1743835778923,
   },
   {
     firstName: "Janice",
@@ -66,6 +74,8 @@ export const DEFAULT_APPLICATIONS = [
     availability: "Part Time",
     skills: "MySQL, ERD, SQL",
     academicCredentials: "Master of Information Systems",
+    previousRoles: "Database Administrator",
+    id: 1743835778924,
   },
   {
     firstName: "Gunther",
@@ -74,6 +84,7 @@ export const DEFAULT_APPLICATIONS = [
     availability: "Full Time",
     skills: "Linux, Bash, DevOps",
     academicCredentials: "Bachelor of Network Engineering",
+    id: 1743835778925,
   },
   {
     firstName: "Carol",
@@ -83,6 +94,7 @@ export const DEFAULT_APPLICATIONS = [
     skills: "C++, Data Structures, Sorting",
     academicCredentials: "Bachelor of Computer Science",
     previousRoles: "Algorithms Tutor",
+    id: 1743835778926,
   },
   {
     firstName: "Mike",
@@ -91,5 +103,6 @@ export const DEFAULT_APPLICATIONS = [
     availability: "Full Time",
     skills: "React, Tailwind, UX/UI",
     academicCredentials: "Bachelor of Digital Design",
+    id: 1743835778927,
   },
 ];
